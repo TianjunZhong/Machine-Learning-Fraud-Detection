@@ -13,7 +13,7 @@ def main():
     # Applying KNN
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
     # knn = KNeighborsClassifier()
-    # param_grid = {'n_neighbors': [1, 3, 5, 7, 10, 15]}
+    # param_grid = {'n_neighbors': [1, 3, 5, 7, 10, 15, 17, 19, 21]}
 
     # grid_search = GridSearchCV(knn, param_grid, cv=5, scoring='roc_auc')
     # grid_search.fit(X_train, y_train)
