@@ -35,9 +35,6 @@ def main():
     # loading dataset
     data = pd.read_csv("creditcard.csv")
 
-    # y = data["Class"]
-    # x = data.drop(columns="Class")
-
     """
     feature extraction
 
@@ -66,7 +63,11 @@ def main():
 
     """
     feature selection
+
+    30 features is too many for a good machine learning model. Feature selection is done
+    by selecting the features that are most correlated with the class label.
     """
+    # correlation matrix
     corr_matrix = data.corr(method="pearson")
     # sn.heatmap(data=corr_matrix, xticklabels=True, yticklabels=True, cmap="PiYG", vmin=-1, vmax=1)
     # plt.show()
@@ -74,20 +75,21 @@ def main():
     corr_class = corr_matrix["Class"]
     print(corr_class.to_string(), end="\n\n")
 
+    # select the most correlated features
     selected_feat = corr_class.abs().sort_values(ascending=False)
     selected_feat = selected_feat[selected_feat >= 0.1]
     selected_feat.drop(labels="Class", inplace=True)
     selected_feat = list(selected_feat.index)
+    print("The following features are selected:")
     print(selected_feat, end="\n\n")
 
     x_selected = data[selected_feat]
 
     """
-    PCA
+    Principal Component Analysis
 
-    # Due the large number of features (30), it's inconvenient and complicated to find 
-    # correlations or information entropies among the features and then select appropriate
-    # features. Instead, we adopt PCA to reduce the dimension.
+    11 features are kept after selection based on correlations. PCA is conducted on them 
+    to reduce dimensions and ensure independence among features.
     """
     n = find_n_components(x_selected, 0.9)
     print(f"Number of principal components to capture 90% variation is {n}", end="\n\n")
@@ -97,8 +99,8 @@ def main():
     print(pca.components_)
 
     # output new data
-    x_new.to_csv("x.csv", index=False)
-    data["Class"].to_csv("y.csv", index=False)
+    # x_new.to_csv("x.csv", index=False)
+    # data["Class"].to_csv("y.csv", index=False)
 
 
 
