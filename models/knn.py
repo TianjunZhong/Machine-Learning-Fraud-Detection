@@ -20,8 +20,8 @@ def plot_roc_curve(model, X_test, y_test, label=None):
     plt.plot(fpr, tpr, label=label)
 
 def main():
-    X = pd.read_csv("x.csv")
-    y = pd.read_csv("y.csv")
+    X = pd.read_csv("data/x.csv")
+    y = pd.read_csv("data/y.csv")
 
     # Splitting the data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
