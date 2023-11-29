@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import roc_auc_score, roc_curve
+from sklearn.metrics import roc_auc_score, roc_curve, f1_score
 from sklearn.datasets import make_classification
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import precision_recall_curve, auc
@@ -39,24 +39,24 @@ def main():
     # print("Best Average Precision Score:", best_score)
 
     # # Training KNN with the best parameters
-    # best_knn = KNeighborsClassifier(n_neighbors=best_params['n_neighbors'])
-    # best_knn.fit(X_train, y_train)
+    best_knn = KNeighborsClassifier(n_neighbors=7)
+    best_knn.fit(X_train, y_train)
 
-    # # ROC AUC scores
-    # train_aucroc = roc_auc_score(y_train, best_knn.predict_proba(X_train)[:, 1])
-    # test_aucroc = roc_auc_score(y_test, best_knn.predict_proba(X_test)[:, 1])
-    # print("Train AUC-ROC:", train_aucroc)
-    # print("Test AUC-ROC:", test_aucroc)
-    plt.figure(figsize=(10, 8))
-    for n_neighbors in [1, 3, 5, 7, 10, 15, 17, 19, 21]:  # Selecting a subset of n_neighbors for demonstration
-        model = KNeighborsClassifier(n_neighbors=n_neighbors)
-        model.fit(X_train, y_train)
-        plot_precision_recall_curve(model, X_test, y_test, label=f'n_neighbors={n_neighbors}')
+    # ROC AUC scores
+    train_f1 = f1_score(y_train, best_knn.predict(X_train))
+    test_f1 = f1_score(y_test, best_knn.predict(X_test))
+    print("Train F1 Score:", train_f1)
+    print("Test F1 Score:", test_f1)
+    # plt.figure(figsize=(10, 8))
+    # for n_neighbors in [1, 3, 5, 7, 10, 15, 17, 19, 21]:  # Selecting a subset of n_neighbors for demonstration
+    #     model = KNeighborsClassifier(n_neighbors=n_neighbors)
+    #     model.fit(X_train, y_train)
+    #     plot_precision_recall_curve(model, X_test, y_test, label=f'n_neighbors={n_neighbors}')
     
-    plt.xlabel('Recall')
-    plt.ylabel('Precision')
-    plt.title('Precision-Recall Curves for KNN')
-    plt.legend(loc='lower left')
-    plt.show()
+    # plt.xlabel('Recall')
+    # plt.ylabel('Precision')
+    # plt.title('Precision-Recall Curves for KNN')
+    # plt.legend(loc='lower left')
+    # plt.show()
 if __name__ == "__main__":
     main()
