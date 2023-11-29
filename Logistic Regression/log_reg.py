@@ -11,13 +11,10 @@ def main():
 
     logreg = LogisticRegression()
 
-    class_weights = []
-    for i in range(0, 21):
-        class_weights.append({0: i * 0.05, 1: 1 - i * 0.05})
-
-    parameter = {"class_weight": class_weights}
+    class_weights = [{0: i * 0.05, 1: 1 - i * 0.05} for i in range(0, 21)]
+    param_grid = {"class_weight": class_weights}
     
-    clf = GridSearchCV(logreg, parameter, cv=5, scoring="f1")
+    clf = GridSearchCV(logreg, param_grid, cv=5, scoring="f1")
     clf.fit(x_train, y_train)
 
     pd.DataFrame(clf.cv_results_).to_csv("cv_results_class_weight.csv", index=False)
@@ -26,9 +23,9 @@ def main():
 
     logreg = LogisticRegression(class_weight={0: 0.15, 1: 0.85}, solver="saga")
 
-    parameter = {"penalty": [None, "l1", "l2"]}
+    param_grid = {"penalty": [None, "l1", "l2"]}
 
-    clf = GridSearchCV(logreg, parameter, cv=5, scoring="f1")
+    clf = GridSearchCV(logreg, param_grid, cv=5, scoring="f1")
     clf.fit(x_train, y_train)
 
     pd.DataFrame(clf.cv_results_).to_csv("cv_results_penalty.csv", index=False)
