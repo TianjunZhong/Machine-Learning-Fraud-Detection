@@ -8,11 +8,7 @@ X = pd.read_csv("data/x.csv")
 y = pd.read_csv("data/y.csv")
 
 # Splitting the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
-X_train.to_csv("data/xTrain.csv")
-y_train.to_csv("data/yTrain.csv")
-X_test.to_csv("data/xTest.csv")
-y_test.to_csv("data/yTest.csv")
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 # Summarize class distribution
 print("Before SMOTE: ", Counter(y_train))
@@ -20,8 +16,18 @@ print("Before SMOTE: ", Counter(y_train))
 # Apply SMOTE
 sm = SMOTE(random_state=42, sampling_strategy=0.05)
 X_res, y_res = sm.fit_resample(X_train, y_train)
-X_res.to_csv("data/xTrain_smote.csv")
-y_res.to_csv("data/yTrain_smote.csv")
+
+X_train = X_train.loc[:, ~X_train.columns.str.contains('^Unnamed')]
+y_train = y_train.loc[:, ~y_train.columns.str.contains('^Unnamed')]
+X_test = X_test.loc[:, ~X_test.columns.str.contains('^Unnamed')]
+y_test = y_test.loc[:, ~y_test.columns.str.contains('^Unnamed')]
+
+X_train.to_csv("data/xTrain.csv", index=False)
+y_train.to_csv("data/yTrain.csv", index=False)
+X_test.to_csv("data/xTest.csv", index=False)
+y_test.to_csv("data/yTest.csv", index=False)
+X_res.to_csv("data/xTrain_smote.csv", index=False)
+y_res.to_csv("data/yTrain_smote.csv", index=False)
 
 bf_counter = 0
 af_counter = 0
