@@ -14,7 +14,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 print("Before SMOTE: ", Counter(y_train))
 
 # Apply SMOTE
-sm = SMOTE(random_state=42, sampling_strategy=0.05)
+sm = SMOTE(random_state=42, sampling_strategy=0.01)
 X_res, y_res = sm.fit_resample(X_train, y_train)
 
 X_train = X_train.loc[:, ~X_train.columns.str.contains('^Unnamed')]
